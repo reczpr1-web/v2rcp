@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>RCP v2 — Przewodnik Użytkownika & Instrukcja Konfiguracji</title>
+  <meta name="description" content="Oficjalna instrukcja obsługi i przewodnik konfiguracji terminala Rejestracji Czasu Pracy (RCP v2). Zeskanowano z Karty Głównej (Master Key).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #101626;
+      --surface-hover: #162035;
+      --card-bg: rgba(16, 22, 38, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.5);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-in: #10b981;
+      --accent-in-glow: rgba(16, 185, 129, 0.3);
+      --accent-out: #f43f5e;
+      --accent-out-glow: rgba(244, 63, 94, 0.3);
+      --accent-master: #f59e0b;
+      --accent-master-glow: rgba(245, 158, 11, 0.35);
+      --accent-primary: #6366f1;
+      --accent-cyan: #06b6d4;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(245, 158, 11, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+
+    /* Header & Badge */
+    header {
+      text-align: center;
+      padding: 32px 0 24px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fbbf24;
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fbbf24;
+      box-shadow: 0 0 10px #fbbf24;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+
+    h1 {
+      font-size: clamp(28px, 6vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 24px;
+    }
+
+    /* Master Key Spotlight Card */
+    .master-hero {
+      background: linear-gradient(145deg, rgba(26, 21, 10, 0.6) 0%, rgba(16, 22, 38, 0.8) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 36px;
+      box-shadow: 0 16px 40px -10px rgba(245, 158, 11, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .master-hero::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    .master-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .key-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111;
+      font-size: 26px;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+      flex-shrink: 0;
+    }
+
+    .master-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fef3c7;
+    }
+
+    .master-desc {
+      font-size: 14px;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+    }
+
+    /* Steps Grid */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .step-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+      position: relative;
+    }
+
+    .step-num {
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .step-card h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .step-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .copy-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #38bdf8;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.2s;
+    }
+
+    .copy-chip:hover {
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .section-card h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    /* Usage Columns */
+    .ops-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .ops-grid { grid-template-columns: 1fr; }
+    }
+
+    .op-box {
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      border: 1px solid transparent;
+      transition: transform 0.2s;
+    }
+
+    .op-in {
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.02) 100%);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+
+    .op-out {
+      background: linear-gradient(180deg, rgba(244, 63, 94, 0.1) 0%, rgba(244, 63, 94, 0.02) 100%);
+      border-color: rgba(244, 63, 94, 0.25);
+    }
+
+    .op-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .op-in .op-title { color: #34d399; }
+    .op-out .op-title { color: #fb7185; }
+
+    .op-box ol {
+      padding-left: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .op-box li {
+      margin-bottom: 8px;
+    }
+
+    /* Table */
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 12px 16px;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .dot-led {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+
+    .led-green { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .led-red { background: #f43f5e; box-shadow: 0 0 8px #f43f5e; }
+    .led-amber { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+    .led-blue { background: #06b6d4; box-shadow: 0 0 8px #06b6d4; }
+
+    /* Features Grid */
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .feat-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+    }
+
+    .feat-card h4 {
+      font-size: 15px;
+      color: #fff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feat-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+
+    footer a {
+      color: var(--accent-primary);
+      text-decoration: none;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e293b;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Header -->
+    <header>
+      <div class="badge-pill">
+        <span class="pulse-dot"></span>
+        <span>RCP v2 — Oficjalny Przewodnik</span>
+      </div>
+      <h1>System Rejestracji Czasu Pracy</h1>
+      <p class="subtitle">
+        Zeskanowano kod QR z fizycznej Karty Głównej (Master Key). Poniżej znajdziesz kompletne instrukcje konfiguracji i obsługi terminala.
+      </p>
+    </header>
+
+    <!-- Master Key Card -->
+    <section class="master-hero">
+      <div class="master-header">
+        <div class="key-icon">🔑</div>
+        <div>
+          <h2 class="master-title">Karta Główna (Master Key)</h2>
+          <div style="font-size: 13px; color: #fbbf24; font-weight: 600;">Klucz Administracyjny & Konfiguracja Wi-Fi</div>
+        </div>
+      </div>
+      
+      <p class="master-desc">
+        Karta Master pozwala w dowolnej chwili otworzyć punkt dostępu Wi-Fi w celu podłączenia terminala do nowej sieci firmowej lub zmiany hasła routera — bez otwierania obudowy.
+      </p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-num">1</span>
+          <h4>Zbliż Kartę Master</h4>
+          <p>Przyłóż kartę do czytnika RFID. Dioda przejdzie w płynny, ciepły bursztynowy oddech, a na ekranie pojawi się napis <strong>AP</strong>.</p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num">2</span>
+          <h4>Połącz z Wi-Fi</h4>
+          <p>Na telefonie otwórz Wi-Fi i połącz się z otwartą siecią:</p>
+          <div class="copy-chip" onclick="copyText('RCP Setup')">
+            <span>📶 RCP Setup</span>
+            <span style="opacity: 0.6;">(kopiuj)</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num">3</span>
+          <h4>Wprowadź hasło</h4>
+          <p>Otwórz przeglądarkę i przejdź pod adres:</p>
+          <div class="copy-chip" onclick="copyText('http://192.168.4.1')">
+            <span>🌐 192.168.4.1</span>
+            <span style="opacity: 0.6;">(kopiuj)</span>
+          </div>
+          <p style="margin-top: 6px;">Wybierz sieć z listy, wpisz hasło i kliknij <strong>Save</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily Usage -->
+    <section class="section-card">
+      <h2>
+        <span class="icon-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">👥</span>
+        Codzienna Obsługa (Rejestracja)
+      </h2>
+      <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">
+        Terminal działa bezdotykowo w oparciu o karty zbliżeniowe RFID (13.56 MHz Mifare / breloki).
+      </p>
+
+      <div class="ops-grid">
+        <div class="op-box op-in">
+          <div class="op-title">
+            <span>🟢</span>
+            <span>WEJŚCIE (IN)</span>
+          </div>
+          <ol>
+            <li>Dotknij panel <strong>WEJŚCIE</strong> (lewa strona, kolor zielony).</li>
+            <li>Przyłóż kartę pracownika do czytnika w ciągu 10 sekund.</li>
+            <li>Usłyszysz wznoszący dźwięk potwierdzenia (<em>Sonic Ring</em>), a dioda mignie na zielono. Czas zapisany!</li>
+          </ol>
+        </div>
+
+        <div class="op-box op-out">
+          <div class="op-title">
+            <span>🔴</span>
+            <span>WYJŚCIE (OUT)</span>
+          </div>
+          <ol>
+            <li>Dotknij panel <strong>WYJŚCIE</strong> (prawa strona, kolor czerwony).</li>
+            <li>Przyłóż kartę pracownika do czytnika w ciągu 10 sekund.</li>
+            <li>Usłyszysz opadający dźwięk potwierdzenia (<em>Reverse Sonic</em>), a dioda mignie na czerwono. Zapisano!</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Signalization Matrix -->
+    <section class="section-card">
+      <h2>
+        <span class="icon-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">💡</span>
+        Sygnalizacja Diod i Dźwięków
+      </h2>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Podświetlenie (LED)</th>
+              <th>Dźwięk</th>
+              <th>Stan Urządzenia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dot-led led-green"></span> Zielone / Czerwone stałe</td>
+              <td>—</td>
+              <td><strong>Czuwanie (Gotowy):</strong> Terminal czeka na dotknięcie panelu.</td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-green"></span> Jasny zielony błysk</td>
+              <td>Melodyjka wznosząca</td>
+              <td><strong>Wejście zarejestrowane pomyślnie.</strong></td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-red"></span> Jasny czerwony błysk</td>
+              <td>Melodyjka opadająca</td>
+              <td><strong>Wyjście zarejestrowane pomyślnie.</strong></td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-amber"></span> Bursztynowy oddech / Ekran: <code>AP</code></td>
+              <td>Akord powitalny</td>
+              <td><strong>Tryb konfiguracji Wi-Fi (Karta Master).</strong></td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-red"></span> Potrójny czerwony błysk</td>
+              <td>Niski ton błędu (200 Hz)</td>
+              <td><strong>Błąd:</strong> Karta nieprzypisana lub powtórzone wejście.</td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-red"></span> Dyskretny impuls co 2 sek.</td>
+              <td>—</td>
+              <td><strong>Tryb Offline:</strong> Brak Wi-Fi, zapis do pamięci lokalnej NVS.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="section-card">
+      <h2>
+        <span class="icon-badge" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">🛡️</span>
+        Zaawansowane Funkcje Systemu
+      </h2>
+
+      <div class="feature-list">
+        <div class="feat-card">
+          <h4>📦 Bufor Offline (NVS)</h4>
+          <p>W przypadku zaniku internetu lub awarii routera terminal nie przerywa pracy. Wszystkie zdarzenia trafiają do bezpiecznej pamięci flash i wysyłają się automatycznie po powrocie sieci.</p>
+        </div>
+
+        <div class="feat-card">
+          <h4>📊 Integracja z Google Sheets</h4>
+          <p>Wszystkie odbicia kart trafiają bezpośrednio do firmowego Arkusza Google w czasie rzeczywistym. Możliwość automatycznego wyliczania nadgodzin, spóźnień i grafików.</p>
+        </div>
+
+        <div class="feat-card">
+          <h4>🔄 Bezprzewodowe Aktualizacje (OTA)</h4>
+          <p>Terminal samoczynnie sprawdza dostępność nowych wersji oprogramowania na GitHubie. Aktualizacja odbywa się jednym kliknięciem z poziomu panelu urządzenia.</p>
+        </div>
+
+        <div class="feat-card">
+          <h4>🌙 Inteligentny Tryb Nocny</h4>
+          <p>Możliwość ustawienia godzin wygaszenia ekranu i diod (np. 22:00 – 06:00). Dotknięcie panelu wybudza wyświetlacz na 5 sekund.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p style="margin-bottom: 8px;"><strong>System RCP v2</strong> &bull; Zaprojektowano dla niezawodności 24/7</p>
+      <p>Repozytorium projektu: <a href="https://github.com/reczpr1-web/v2rcp" target="_blank" rel="noopener">github.com/reczpr1-web/v2rcp</a></p>
+    </footer>
+
+  </div>
+
+  <div id="toast">Skopiowano do schowka!</div>
+
+  <script>
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const input = document.createElement('textarea');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+      }
+      showToast('Skopiowano: ' + text);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
