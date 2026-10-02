@@ -1,0 +1,25 @@
+# Build and temporary files
+build/
+__pycache__/
+*.pyc
+arduino-cli.exe
+arduino-cli.zip
+.system_generated/
+scratch/
+.DS_Store
+Thumbs.db
+
+# Proprietary sources (kept locally, excluded from public release repo)
+*.ino
+*.gs
+*.stl
+*.3mf
+*.txt
+*.svg
+*.csv
+patch.py
+release.py
+LICENSE.txt
+presentation/
+data/
+test_esp32/

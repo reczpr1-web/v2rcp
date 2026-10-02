@@ -1,0 +1,7 @@
+{
+  "version": "1.3.10",
+  "date": "2026-10-02",
+  "notes": "Feature: Add summary totals to CSV export",
+  "forced": false,
+  "disabled": false
+}

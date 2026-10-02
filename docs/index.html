@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>System Rejestracji Czasu Pracy — RCP v2 | Oficjalny Przewodnik i Instrukcja</title>
+  <meta name="description" content="Kompleksowy Przewodnik Użytkownika i Instrukcja Obsługi Systemu Rejestracji Czasu Pracy (RCP v2). Konfiguracja Wi-Fi, obsługa kart NFC, ewidencja czasu pracy i eksport do kadr.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080c14;
+      --surface-1: #0f172a;
+      --surface-2: #1e293b;
+      --surface-card: rgba(15, 23, 42, 0.78);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hi: rgba(255, 255, 255, 0.16);
+      --text-1: #f8fafc;
+      --text-2: #94a3b8;
+      --text-3: #64748b;
+      --blue: #3b82f6;
+      --blue-glow: rgba(59, 130, 246, 0.35);
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.3);
+      --amber: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.35);
+      --red: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.3);
+      --purple: #8b5cf6;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 25%, rgba(245, 158, 11, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 100px;
+    }
+
+    /* Top Navigation Banner */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      backdrop-filter: blur(16px);
+      margin-bottom: 32px;
+      gap: 12px;
+    }
+
+    .top-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .top-nav-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .top-nav-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-2);
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      transition: all 0.2s;
+    }
+
+    .btn-nav:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: var(--border-hi);
+    }
+
+    .btn-nav-primary {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+      box-shadow: 0 2px 10px var(--blue-glow);
+    }
+
+    .btn-nav-primary:hover {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 20px 0 36px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fbbf24;
+      margin-bottom: 20px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fbbf24;
+      box-shadow: 0 0 10px #fbbf24;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+
+    h1 {
+      font-size: clamp(30px, 6vw, 46px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: clamp(16px, 2.5vw, 18px);
+      color: var(--text-2);
+      max-width: 680px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    /* Spis treści (Table of contents) */
+    .toc-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .toc-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 10px;
+    }
+
+    .toc-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--text-2);
+      font-size: 14px;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .toc-link:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.3);
+      color: #fff;
+      transform: translateX(4px);
+    }
+
+    .toc-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-1);
+      flex-shrink: 0;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 32px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+      scroll-margin-top: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .section-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin: 22px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-card p {
+      font-size: 15px;
+      color: var(--text-2);
+      margin-bottom: 14px;
+    }
+
+    .section-card ul, .section-card ol {
+      padding-left: 22px;
+      margin-bottom: 16px;
+      color: var(--text-2);
+      font-size: 15px;
+    }
+
+    .section-card li {
+      margin-bottom: 8px;
+    }
+
+    .section-card strong {
+      color: var(--text-1);
+    }
+
+    /* Step Cards Grid */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+
+    .step-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      position: relative;
+    }
+
+    .step-num {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      font-size: 28px;
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.06);
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1;
+    }
+
+    .step-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .step-card p {
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    /* Copy Chips */
+    .copy-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-hi);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #38bdf8;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+      margin: 4px 4px 4px 0;
+    }
+
+    .copy-chip:hover {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: var(--blue);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .copy-chip .hint {
+      font-size: 11px;
+      color: var(--text-3);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Alerts / Notes */
+    .alert-box {
+      display: flex;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: var(--radius-md);
+      margin: 18px 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .alert-info {
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      color: #bfdbfe;
+    }
+
+    .alert-amber {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      color: #fde68a;
+    }
+
+    .alert-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Operational Cards (IN / OUT) */
+    .ops-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 650px) {
+      .ops-grid { grid-template-columns: 1fr; }
+    }
+
+    .op-box {
+      border-radius: var(--radius-md);
+      padding: 22px;
+      border: 1px solid transparent;
+    }
+
+    .op-in {
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.02) 100%);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .op-out {
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.02) 100%);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .op-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .op-in .op-title { color: #34d399; }
+    .op-out .op-title { color: #f87171; }
+
+    .op-box ol {
+      padding-left: 20px;
+      margin-bottom: 0;
+      font-size: 14px;
+      color: var(--text-2);
+    }
+
+    .op-box li {
+      margin-bottom: 8px;
+    }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      margin: 18px 0;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 14px 18px;
+      color: var(--text-1);
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-2);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .dot-led {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .led-green { background: #10b981; box-shadow: 0 0 10px #10b981; }
+    .led-red { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
+    .led-amber { background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+    .led-blue { background: #3b82f6; box-shadow: 0 0 10px #3b82f6; }
+
+    /* Support Card */
+    .support-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 20px 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-top: 14px;
+    }
+
+    .support-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .support-icon {
+      font-size: 26px;
+    }
+
+    .support-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-3);
+      font-weight: 700;
+    }
+
+    .support-email {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .support-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 0 20px;
+      border-top: 1px solid var(--border);
+      color: var(--text-3);
+      font-size: 13px;
+    }
+
+    footer a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e293b;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Top Bar -->
+    <div class="top-nav">
+      <div class="top-nav-brand">
+        <div class="top-nav-logo">RCP</div>
+        <span>RCP v2 — Podręcznik</span>
+      </div>
+      <div class="top-nav-actions">
+        <a href="http://rcp.local" class="btn-nav btn-nav-primary" title="Przejdź do czytnika w sieci lokalnej">
+          ⚡ Panel czytnika
+        </a>
+        <a href="https://github.com/reczpr1-web/v2rcp" target="_blank" rel="noopener noreferrer" class="btn-nav">
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <div class="badge-pill">
+        <span class="pulse-dot"></span>
+        <span>Oficjalny Przewodnik Użytkownika &bull; v1.2.0</span>
+      </div>
+      <h1>System Rejestracji Czasu Pracy</h1>
+      <p class="subtitle">
+        Kompleksowa instrukcja obsługi, konfiguracji sieci Wi-Fi, kart zbliżeniowych oraz integracji z arkuszem kalkulacyjnym.
+      </p>
+    </header>
+
+    <!-- Spis treści -->
+    <nav class="toc-card">
+      <div class="toc-title">
+        <span>📑</span> Spis treści
+      </div>
+      <div class="toc-grid">
+        <a href="#1-pierwsze-kroki-konfiguracja-wi-fi-karta-master" class="toc-link">
+          <span class="toc-num">1</span>
+          <span>Konfiguracja Wi-Fi (Karta Master)</span>
+        </a>
+        <a href="#2-logowanie-do-panelu-w-sieci-firmowej" class="toc-link">
+          <span class="toc-num">2</span>
+          <span>Logowanie do panelu w sieci</span>
+        </a>
+        <a href="#3-zarzadzanie-pracownikami" class="toc-link">
+          <span class="toc-num">3</span>
+          <span>Zarządzanie pracownikami & NFC</span>
+        </a>
+        <a href="#4-grupy-i-dzialy-firmy" class="toc-link">
+          <span class="toc-num">4</span>
+          <span>Grupy i działy firmy</span>
+        </a>
+        <a href="#5-dostep-do-arkusza-google" class="toc-link">
+          <span class="toc-num">5</span>
+          <span>Dostęp do Arkusza Google</span>
+        </a>
+        <a href="#6-ewidencja-czasu-pracy-i-wydruki" class="toc-link">
+          <span class="toc-num">6</span>
+          <span>Ewidencja czasu pracy i wydruki</span>
+        </a>
+        <a href="#7-codzienna-obsluga-czytnika" class="toc-link">
+          <span class="toc-num">7</span>
+          <span>Codzienna obsługa czytnika</span>
+        </a>
+        <a href="#8-znaczenie-diod-led-i-dzwiekow" class="toc-link">
+          <span class="toc-num">8</span>
+          <span>Znaczenie diod LED i dźwięków</span>
+        </a>
+        <a href="#9-tryb-offline-i-kopie-zapasowe" class="toc-link">
+          <span class="toc-num">9</span>
+          <span>Tryb Offline i kopie zapasowe</span>
+        </a>
+        <a href="#10-pomoc-techniczna" class="toc-link">
+          <span class="toc-num">10</span>
+          <span>Pomoc techniczna</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Rozdział 1: Pierwsze kroki -->
+    <section class="section-card" id="1-pierwsze-kroki-konfiguracja-wi-fi-karta-master">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">🔑</div>
+        <div class="section-title">1. Pierwsze kroki: Konfiguracja Wi-Fi (Karta Master)</div>
+      </div>
+
+      <p>
+        Urządzenie posiada specjalną <strong>Kartę Główną (Master Key)</strong>, która służy do wprowadzania terminala w tryb konfiguracji sieci bez konieczności rozkręcania obudowy czy podłączania kabli.
+      </p>
+
+      <h3>Instrukcja połączenia z nową siecią Wi-Fi:</h3>
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-num">1</span>
+          <h4>Przyłóż Kartę Master</h4>
+          <p>Zbliż kartę do czytnika. Terminal zagra melodyjkę, podświetli się na żółto, a na małym ekranie wyświetli się napis <strong>AP</strong>.</p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num">2</span>
+          <h4>Połącz z Wi-Fi</h4>
+          <p>Na telefonie lub komputerze wejdź w ustawienia Wi-Fi i wybierz otwartą sieć:</p>
+          <div class="copy-chip" onclick="copyText('RCP Setup')">
+            <span>📶 RCP Setup</span>
+            <span class="hint">(kopiuj)</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num">3</span>
+          <h4>Otwórz konfigurator</h4>
+          <p>Kliknij powiadomienie <em>„Zaloguj się do sieci”</em> lub wpisz w przeglądarce:</p>
+          <div class="copy-chip" onclick="copyText('http://rcp.local')">
+            <span>🌐 rcp.local</span>
+            <span class="hint">(kopiuj)</span>
+          </div>
+          <div class="copy-chip" onclick="copyText('http://192.168.4.1')">
+            <span>🌐 192.168.4.1</span>
+            <span class="hint">(kopiuj)</span>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num">4</span>
+          <h4>Wybierz sieć i zapisz</h4>
+          <p>Kliknij <strong>„📶 Skonfiguruj sieć Wi-Fi”</strong>, wybierz sieć firmową i wpisz hasło. Po 10-sekundowym odliczeniu kliknij <strong>„Zrozumiałem, połącz z siecią”</strong>.</p>
+        </div>
+      </div>
+
+      <div class="alert-box alert-amber">
+        <div class="alert-icon">ℹ️</div>
+        <div>
+          <strong>Bezpieczeństwo:</strong> Tryb konfiguracji jest w pełni odwracalny. Jeśli w ciągu 3 minut nie wprowadzisz nowej sieci, terminal samoczynnie powróci do normalnej pracy.
+        </div>
+      </div>
+    </section>
+
+    <!-- Rozdział 2: Logowanie -->
+    <section class="section-card" id="2-logowanie-do-panelu-w-sieci-firmowej">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">💻</div>
+        <div class="section-title">2. Logowanie do panelu w sieci firmowej</div>
+      </div>
+
+      <p>
+        Po pomyślnym połączeniu z firmowym Wi-Fi panel zarządzania jest dostępny dla każdego komputera i telefonu podłączonego do tego samego routera:
+      </p>
+
+      <ol>
+        <li>
+          Otwórz przeglądarkę i wpisz:
+          <div style="margin-top: 6px;">
+            <div class="copy-chip" onclick="copyText('http://rcp.local')">
+              <span>👉 http://rcp.local</span>
+              <span class="hint">(kopiuj)</span>
+            </div>
+          </div>
+        </li>
+        <li style="margin-top: 10px;">
+          <strong>Ważna informacja:</strong> Jeśli firmowy router nie obsługuje nazw mDNS, wejdź w panel routera, sprawdź jaki adres IP przydzielono czytnikowi (np. <code>192.168.1.150</code>) i wpisz go bezpośrednio w przeglądarce:
+          <div style="margin-top: 6px;">
+            <span class="copy-chip">
+              <span>👉 http://[ADRES_IP_URZĄDZENIA]</span>
+            </span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Rozdział 3: Pracownicy -->
+    <section class="section-card" id="3-zarzadzanie-pracownikami">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(139, 92, 246, 0.15); color: #a78bfa;">👥</div>
+        <div class="section-title">3. Zarządzanie pracownikami</div>
+      </div>
+
+      <p>
+        W zakładce <strong>👥 Pracownicy</strong> znajduje się pełna lista kadry oraz przypisanych kart zbliżeniowych.
+      </p>
+
+      <h3>➕ Dodawanie nowego pracownika:</h3>
+      <ol>
+        <li>W prawym górnym rogu kliknij niebieski przycisk <strong><code>+ Dodaj pracownika</code></strong>.</li>
+        <li>
+          <strong>Krok 1 (Dane osobowe):</strong>
+          <ul>
+            <li><strong>Numer ID:</strong> Unikalny numer pracownika w firmie (np. <code>1</code>, <code>007</code>, <code>102</code>).</li>
+            <li><strong>Imię i nazwisko:</strong> Np. <em>Jan Kowalski</em>.</li>
+            <li><strong>Indywidualna norma (godz.):</strong> Opcjonalnie (jeśli pracownik ma inny wymiar czasu, np. <code>4</code> dla pół etatu. Jeśli puste — pobierana jest norma grupy).</li>
+            <li><strong>Grupy / Działy:</strong> Wybierz dział pracownika (np. <em>Magazyn</em>, <em>Biuro</em>).</li>
+            <li>Kliknij <strong><code>Dalej →</code></strong>.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Krok 2 (Przypisanie karty zbliżeniowej NFC):</strong>
+          <ul>
+            <li><strong>Skanuj kartę:</strong> Terminal na ścianie zaświeci się na niebiesko i przejdzie w tryb odczytu. Wystarczy zbliżyć nową kartę lub brelok do czytnika — numer zostanie automatycznie sczytany i zapisany.</li>
+            <li><strong>Bez karty:</strong> Jeśli pracownik jeszcze nie otrzymał breloka, kliknij ten przycisk. Kartę będzie można dodać w dowolnym momencie później.</li>
+          </ul>
+        </li>
+      </ol>
+
+      <h3>✏️ Edycja i usuwanie:</h3>
+      <ul>
+        <li>Kliknij na wiersz pracownika lub przycisk <strong><code>✏️ Edytuj</code></strong>, aby zmienić nazwisko, wymiar godzin lub przypisać nową kartę (z opcją zachowania starej).</li>
+        <li>Aby trwale usunąć pracownika z bazy i pamięci urządzenia, kliknij czerwony krzyżyk <strong><code>✕</code></strong> (na telefonach: przycisk <strong><code>⋮ Opcje</code></strong> ➔ <strong><code>Usuń pracownika</code></strong>).</li>
+      </ul>
+    </section>
+
+    <!-- Rozdział 4: Grupy i działy -->
+    <section class="section-card" id="4-grupy-i-dzialy-firmy">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(236, 72, 153, 0.15); color: #f472b6;">🏷️</div>
+        <div class="section-title">4. Grupy i działy firmy</div>
+      </div>
+
+      <p>
+        W zakładce <strong>🏷️ Grupy i działy</strong> możesz podzielić załogę na sekcje (np. <em>Produkcja</em>, <em>Biuro</em>, <em>Kierowcy</em>):
+      </p>
+
+      <ol>
+        <li>Kliknij <strong><code>+ Nowa grupa</code></strong>.</li>
+        <li>Wpisz nazwę działu oraz domyślną dobową normę godzin (np. <code>8</code>).</li>
+        <li>Wybierz kolor tła oraz kolor tekstu etykiety dla czytelnej identyfikacji na listach obecności.</li>
+        <li>Kliknij <strong><code>Zapisz</code></strong>.</li>
+      </ol>
+
+      <p>
+        Przypisanie grupy pracownikowi automatycznie ustala dla niego czas pracy i pozwala na wygodne filtrowanie raportów.
+      </p>
+    </section>
+
+    <!-- Rozdział 5: Dostęp do arkusza Google -->
+    <section class="section-card" id="5-dostep-do-arkusza-google">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">🔐</div>
+        <div class="section-title">5. Dostęp do Arkusza Google</div>
+      </div>
+
+      <p>
+        Wszystkie dane trafiają bezpośrednio do zabezpieczonego arkusza kalkulacyjnego online w <strong>Google Sheets</strong>.
+      </p>
+
+      <p>W zakładce <strong>🔐 Dostęp do arkusza</strong>:</p>
+      <ul>
+        <li><strong>Bezpośredni podgląd:</strong> Kliknij zielony przycisk <strong><code>📗 Otwórz arkusz</code></strong>, aby przejść prosto do tabeli w nowej karcie przeglądarki.</li>
+        <li>
+          <strong>Nadawanie uprawnień (np. dla Księgowości / Właściciela):</strong>
+          <ol style="margin-top: 6px;">
+            <li>W polu <em>„Adres e-mail użytkownika”</em> wpisz adres Gmail osoby uprawnionej.</li>
+            <li>Wybierz poziom:
+              <ul>
+                <li><strong>Edytor</strong> — pełne prawo do wprowadzania zmian i korekt.</li>
+                <li><strong>Przeglądający</strong> — wgląd do raportów tylko do odczytu.</li>
+              </ul>
+            </li>
+            <li>Kliknij <strong><code>Przyznaj dostęp</code></strong>.</li>
+          </ol>
+        </li>
+        <li>W tabeli poniżej widzisz listę wszystkich osób mających dostęp z możliwością jego natychmiastowego odebrania przyciskiem <strong><code>Odbierz</code></strong>.</li>
+      </ul>
+    </section>
+
+    <!-- Rozdział 6: Ewidencja i wydruki -->
+    <section class="section-card" id="6-ewidencja-czasu-pracy-i-wydruki">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">📊</div>
+        <div class="section-title">6. Ewidencja czasu pracy i wydruki</div>
+      </div>
+
+      <p>System automatycznie zlicza godziny, wykrywa spóźnienia oraz nadgodziny:</p>
+
+      <ul>
+        <li>
+          <strong>Zakładka 📋 Rejestr obecności:</strong><br>
+          Widok wszystkich odbić z podziałem na tygodnie. Klikając w dowolny wiersz, kierownik może ręcznie skorygować godziny wejścia/wyjścia lub oznaczyć dzień jako <strong>Urlop wypoczynkowy (UW)</strong> lub <strong>Zwolnienie lekarskie (L4)</strong>.
+        </li>
+        <li>
+          <strong>Zakładka 📊 Ewidencja czasu pracy:</strong><br>
+          Gotowe comiesięczne karty pracy dla każdego pracownika.
+        </li>
+        <li>
+          <strong>Wydruk / PDF:</strong><br>
+          Wybierz pracownika lub zestawienie zbiorcze i kliknij zielony przycisk <strong><code>🖨️ Drukuj / PDF</code></strong>. Strona automatycznie sformatuje się do czystego dokumentu z polami na <strong>podpis pracownika</strong> oraz <strong>podpis pracodawcy</strong>, gotowego do wpięcia w akta.
+        </li>
+        <li>
+          <strong>Eksport CSV:</strong><br>
+          Przycisk <strong><code>⬇️ CSV</code></strong> generuje plik zgodny z programami kadrowo-płacowymi (Excel, Optima, Gratyfikant).
+        </li>
+      </ul>
+    </section>
+
+    <!-- Rozdział 7: Codzienna obsługa czytnika -->
+    <section class="section-card" id="7-codzienna-obsluga-czytnika">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">⏱️</div>
+        <div class="section-title">7. Codzienna obsługa czytnika</div>
+      </div>
+
+      <p>Dla pracowników rejestracja jest maksymalnie uproszczona:</p>
+
+      <div class="ops-grid">
+        <div class="op-box op-in">
+          <div class="op-title">
+            <span>🟢</span>
+            <span>WEJŚCIE (IN)</span>
+          </div>
+          <ol>
+            <li>Dotknij lewy panel sensoryczny: <strong>WEJŚCIE (IN)</strong> (zaświeci się na zielono).</li>
+            <li>Zbliż kartę lub brelok do czytnika na obudowie.</li>
+            <li>Czytnik wyda dźwięk potwierdzenia (wznoszący), diody błysną i wpis zostanie natychmiast zarejestrowany.</li>
+          </ol>
+        </div>
+
+        <div class="op-box op-out">
+          <div class="op-title">
+            <span>🔴</span>
+            <span>WYJŚCIE (OUT)</span>
+          </div>
+          <ol>
+            <li>Dotknij prawy panel sensoryczny: <strong>WYJŚCIE (OUT)</strong> (zaświeci się na czerwono).</li>
+            <li>Zbliż kartę lub brelok do czytnika na obudowie.</li>
+            <li>Czytnik wyda dźwięk potwierdzenia (opadający), diody błysną i wpis zostanie natychmiast zarejestrowany.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rozdział 8: Sygnalizacja LED i dźwięki -->
+    <section class="section-card" id="8-znaczenie-diod-led-i-dzwiekow">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">💡</div>
+        <div class="section-title">8. Znaczenie diod LED i dźwięków</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Sygnał świetlny (LED)</th>
+              <th>Sygnał dźwiękowy</th>
+              <th>Znaczenie</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dot-led led-green"></span> <strong>Ciągłe podświetlenie</strong></td>
+              <td>Brak</td>
+              <td>Urządzenie w trybie czuwania, gotowe do pracy.</td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-green"></span> <strong>Podświetlona jedna strona</strong></td>
+              <td>Krótki pik</td>
+              <td>Wybrano Wejście lub Wyjście — przyłóż kartę.</td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-green"></span> <strong>Błysk zielony</strong></td>
+              <td>Dźwięk wznoszący</td>
+              <td><strong>Pomyślnie zarejestrowano WEJŚCIE</strong>.</td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-red"></span> <strong>Błysk czerwony</strong></td>
+              <td>Dźwięk opadający</td>
+              <td><strong>Pomyślnie zarejestrowano WYJŚCIE</strong>.</td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-amber"></span> <strong>Pulsujący żółty / Ekran: <code>AP</code></strong></td>
+              <td>Melodyjka serwisowa</td>
+              <td><strong>Aktywny tryb konfiguracji Wi-Fi (Karta Master)</strong>.</td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-red"></span> <strong>Potrójny czerwony błysk</strong></td>
+              <td>Niski dźwięk błędu</td>
+              <td>Karta nieznana, błąd odczytu lub powtórne wejście.</td>
+            </tr>
+            <tr>
+              <td><span class="dot-led led-red"></span> <strong>Subtelny czerwony impuls co 2 s</strong></td>
+              <td>Brak</td>
+              <td><strong>Brak Wi-Fi (Tryb Offline)</strong> — terminal działa lokalnie.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Rozdział 9: Tryb Offline -->
+    <section class="section-card" id="9-tryb-offline-i-kopie-zapasowe">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">🛡️</div>
+        <div class="section-title">9. Tryb Offline i kopie zapasowe</div>
+      </div>
+
+      <ul>
+        <li>
+          <strong>Pełna ochrona przed brakiem internetu:</strong><br>
+          Awaria routera lub brak połączenia nie przerywa pracy terminala. Wszystkie odbicia zapisują się w pamięci wewnętrznej urządzenia. W momencie powrotu sieci Wi-Fi terminal <strong>automatycznie przesyła wszystkie zaległe dane do Arkusza Google</strong>.
+        </li>
+        <li style="margin-top: 10px;">
+          <strong>Kopia zapasowa konfiguracji:</strong><br>
+          W zakładce <strong>⚙️ Ustawienia</strong> ➔ <strong>Kopia zapasowa</strong> możesz jednym kliknięciem zapisać całą bazę ustawień i grup w chmurze Google lub pobrać plik <code>.json</code> na dysk komputera.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Rozdział 10: Pomoc techniczna -->
+    <section class="section-card" id="10-pomoc-techniczna">
+      <div class="section-header">
+        <div class="section-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">💬</div>
+        <div class="section-title">10. Pomoc techniczna</div>
+      </div>
+
+      <p>
+        W przypadku pytań dotyczących obsługi, konfiguracji, zgłaszania uwag lub serwisu skontaktuj się bezpośrednio z autorem:
+      </p>
+
+      <div class="support-card">
+        <div class="support-meta">
+          <span class="support-icon">✉️</span>
+          <div>
+            <div class="support-title">Kontakt e-mail</div>
+            <a href="mailto:support@rcp.local" class="support-email">support@rcp.local</a>
+          </div>
+        </div>
+        <div class="support-actions">
+          <button class="btn-nav" onclick="copyText('support@rcp.local')">
+            📋 Kopiuj e-mail
+          </button>
+          <a href="mailto:support@rcp.local?subject=V2RCP%20-%20Zg%C5%82oszenie" class="btn-nav btn-nav-primary">
+            ✉️ Napisz wiadomość
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p style="margin-bottom: 8px;"><strong>System RCP v2</strong> &bull; Rejestracja Czasu Pracy dla Firm</p>
+      <p>Oficjalne repozytorium kodu: <a href="https://github.com/reczpr1-web/v2rcp" target="_blank" rel="noopener noreferrer">github.com/reczpr1-web/v2rcp</a></p>
+    </footer>
+
+  </div>
+
+  <div id="toast">Skopiowano do schowka!</div>
+
+  <script>
+    function copyText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const input = document.createElement('textarea');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+      }
+      showToast('Skopiowano: ' + text);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
